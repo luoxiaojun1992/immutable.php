@@ -25,13 +25,12 @@ class Immutable
 
     public function toMutable($persistent = false)
     {
-        $old_object = $this->getOldObject();
         if ($persistent) {
-            foreach ($this->getNewAttributes() as $new_attribute_name => $new_attribute_value) {
-                $old_object->$new_attribute_name = $new_attribute_value;
+            foreach ($this->new_attributes as $new_attribute_name => $new_attribute_value) {
+                $this->old_obj->$new_attribute_name = $new_attribute_value;
             }
         }
-        return $old_object;
+        return $this->old_obj;
     }
 
     public function __set($name, $value)
@@ -41,11 +40,11 @@ class Immutable
 
     public function __get($name)
     {
-        if (array_key_exists($name, $this->getNewAttributes())) {
-            return $this->getNewAttributes()[$name];
+        if (array_key_exists($name, $this->new_attributes)) {
+            return $this->new_attributes[$name];
         }
 
-        return $this->getOldObject()->$name;
+        return $this->old_obj->$name;
     }
 
     public function __call($name, $arguments)
@@ -54,12 +53,12 @@ class Immutable
             return $this->new_functions[$name]->call($this, $arguments);
         }
 
-        return call_user_func_array([$this->getOldObject(), $name], $arguments);
+        return call_user_func_array([$this->old_obj, $name], $arguments);
     }
 
     public function isInstanceOf(string $class)
     {
-        return $this->getOldObject() instanceof $class;
+        return $this->old_obj instanceof $class;
     }
 
     public function setFunction(string $func_name, \Closure $func)
@@ -69,16 +68,6 @@ class Immutable
 
     public function getClass()
     {
-        return get_class($this->getOldObject());
-    }
-
-    public function getOldObject()
-    {
-        return $this->old_obj;
-    }
-
-    public function getNewAttributes()
-    {
-        return $this->new_attributes;
+        return get_class($this->old_obj);
     }
 }
