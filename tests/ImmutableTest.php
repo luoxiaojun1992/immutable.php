@@ -31,6 +31,14 @@ var_dump($immutable->getClass());
 
 $mutableFromImmutable = $immutable->toMutable(true);
 unset($immutable);
-$mutableFromImmutable->foo = 2;
 var_dump($mutableFromImmutable->getFoo());
 var_dump($mutable->getFoo());
+
+//Output:
+//int(1)
+//int(1)
+//int(2)
+//bool(true)
+//string(7) "Mutable"
+//int(2)
+//int(2)
