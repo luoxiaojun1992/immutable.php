@@ -6,6 +6,8 @@ class Immutable
 
     protected $new_attributes = [];
 
+    protected $new_functions = [];
+
     private function __construct($mutable)
     {
         $this->old_obj = $mutable;
@@ -37,11 +39,25 @@ class Immutable
 
     public function __call($name, $arguments)
     {
+        if (array_key_exists($name, $this->new_functions)) {
+            return $this->new_functions[$name]->call($this, $arguments);
+        }
+
         return call_user_func_array([$this->old_obj, $name], $arguments);
     }
 
     public function isInstanceOf($class)
     {
         return $this->old_obj instanceof $class;
+    }
+
+    public function setFunction($func_name, $func)
+    {
+        $this->new_functions[$func_name] = $func;
+    }
+
+    public function getClass()
+    {
+        return get_class($this->old_obj);
     }
 }
