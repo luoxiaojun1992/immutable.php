@@ -15,7 +15,7 @@ class Immutable
 
     private function __clone()
     {
-        //
+        //do noting
     }
 
     public static function fromMutable($mutable)
