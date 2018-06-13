@@ -24,6 +24,7 @@ $immutable->setFunction('getFoo', function () {
     return $this->foo;
 });
 
+var_dump($mutable->getFoo());
 var_dump($immutable->getFoo());
 var_dump($immutable->isInstanceOf(Mutable::class));
 var_dump($immutable->getClass());
