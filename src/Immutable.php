@@ -46,12 +46,12 @@ class Immutable
         return call_user_func_array([$this->old_obj, $name], $arguments);
     }
 
-    public function isInstanceOf($class)
+    public function isInstanceOf(string $class)
     {
         return $this->old_obj instanceof $class;
     }
 
-    public function setFunction($func_name, $func)
+    public function setFunction(string $func_name, \Closure $func)
     {
         $this->new_functions[$func_name] = $func;
     }
