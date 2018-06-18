@@ -35,6 +35,10 @@ class Immutable
 
     public function __set($name, $value)
     {
+        if (property_exists($this->mutable, $name)) {
+            return;
+        }
+
         $this->new_attributes[$name] = $value;
     }
 
@@ -63,6 +67,10 @@ class Immutable
 
     public function setFunction(string $func_name, \Closure $func)
     {
+        if (method_exists($this->mutable, $func_name)) {
+            return;
+        }
+
         $this->new_functions[$func_name] = $func;
     }
 
